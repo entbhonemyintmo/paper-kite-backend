@@ -14,6 +14,8 @@ const bodyParser = require("body-parser");
  * Importing Routes
  */
 const authRoutes = require("./routes/authRoutes");
+const HttpException = require("./utils/httpException");
+const errorHandler = require("./middlewares/errorHandler");
 
 /**
  * Registering Middlewares
@@ -25,6 +27,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
  * Registering Routes
  */
 app.use("/auth", authRoutes);
+
+/**
+ * Error handler middleware must below of all routes register
+ */
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8001;
 

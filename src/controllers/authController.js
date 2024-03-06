@@ -1,4 +1,7 @@
+const argon = require("argon2");
 const generateJwtToken = require("../utils/generateJwtToken");
+const HttpStatus = require("../utils/httpStatus");
+const HttpException = require("../utils/httpException");
 
 const User = require("../models/User");
 
@@ -9,12 +12,22 @@ const singIn = async (req, res, next) => {
     });
   }
 
-  const user = { id: 1, email: "entbhone@gmail.com" };
-  // const user = await User.findOne({ email: req.body.email });
+  // const user = { id: 1, email: "entbhone@gmail.com" };
+  const user = await User.findOne({ email: req.body.email });
 
-  if (!user) {
-    res.send(404).send({ message: "Sorry!, user not found" });
-  }
+  if (!user)
+    return next(
+      new HttpException(
+        HttpStatus.NOT_FOUND,
+        `There is no account with ${req.body.email}`
+      )
+    );
+
+  const passwordMatches = await argon.verify(user.password, req.body.password);
+  if (!passwordMatches)
+    return next(
+      new HttpException(HttpStatus.UNAUTHORIZED, "Incorrect Password")
+    );
 
   const access_token = generateJwtToken(
     { id: user.id, email: user.email },
@@ -27,7 +40,9 @@ const singIn = async (req, res, next) => {
     "4h"
   );
 
-  res.status(200).send({ access_token, refresh_token, type: "Bearer" });
+  res
+    .status(HttpStatus.OK)
+    .send({ access_token, refresh_token, type: "Bearer" });
 };
 
 module.exports = singIn;
