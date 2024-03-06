@@ -5,11 +5,41 @@ const HttpException = require("../utils/httpException");
 
 const User = require("../models/User");
 
+const singUp = async (req, res, next) => {
+  if (!req.body.name || !req.body.email || !req.body.password) {
+    return next(
+      new HttpException(HttpStatus.BAD_REQUEST, "Please fill all fields!")
+    );
+  }
+
+  const { name, email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (user)
+    return next(
+      new HttpException(HttpStatus.BAD_REQUEST, "Email already exists")
+    );
+
+  const hashedPassword = await argon.hash(password);
+
+  try {
+    await new User({ name, email, password: hashedPassword }).save();
+
+    res.status(HttpStatus.CREATED).send({
+      statusCode: HttpStatus.CREATED,
+      message: "User created successfully!",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const singIn = async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
-    return res.status(400).send({
-      message: "Email and Password Required",
-    });
+    return next(
+      new HttpException(HttpStatus.BAD_REQUEST, "Email and Password Required")
+    );
   }
 
   // const user = { id: 1, email: "entbhone@gmail.com" };
@@ -45,4 +75,4 @@ const singIn = async (req, res, next) => {
     .send({ access_token, refresh_token, type: "Bearer" });
 };
 
-module.exports = singIn;
+module.exports = { singUp, singIn };
