@@ -1,7 +1,7 @@
 {
-  "name": "ser-poh-backend",
+  "name": "paper-kite-backend",
   "version": "1.0.0",
-  "description": "Backend Repository for SerPoh (စာပို့) app: A SMS sending application.",
+  "description": "Backend Repository for PaperKite app: A SMS sending application.",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
