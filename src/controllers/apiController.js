@@ -12,19 +12,20 @@ const generateApiKey = async (req, res, next) => {
 
     const expireAt = getExpiration(req.body.duration);
 
-    const api = await new ApiKey({
+    const apiKey = await new ApiKey({
+      description: req.body.description,
       secret,
       _user: req.user.id,
       expireAt,
     }).save();
 
     const key = generateJwtToken(
-      { id: req.user.id },
+      { id: req.user.id, keyId: apiKey.id },
       secret,
       `${req.body.duration}d`
     );
 
-    await ApiKey.findByIdAndUpdate(api.id, { key });
+    await ApiKey.findByIdAndUpdate(apiKey.id, { key });
 
     res
       .status(201)
