@@ -1,5 +1,6 @@
 const express = require("express");
 require("dotenv").config();
+require("./jobs/sendSms");
 
 const { connectDatabase } = require("./database");
 

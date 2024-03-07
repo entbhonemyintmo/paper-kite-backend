@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
 const toSendSchema = require("./ToSend");
+const BatchStatus = require("../utils/batchStatus");
 const { Schema } = mongoose;
-
-const BatchStatus = {
-  PENDING: "pending",
-  IN_PROGRESS: "in_progress",
-  COMPLETED: "completed",
-};
 
 const batchSchema = new Schema({
   description: String,
