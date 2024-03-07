@@ -15,6 +15,12 @@ router.get(
   apiController.getAllApiKeys
 );
 
+router.get(
+  "/logs",
+  tokenGuard(process.env.ACCESS_TOKEN_SECRET),
+  apiController.getAllApiLogs
+);
+
 router.post("/send", apiKeyGuard, apiController.sendMessage);
 
 module.exports = router;

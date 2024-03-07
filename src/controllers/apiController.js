@@ -57,7 +57,11 @@ const sendMessage = async (req, res, next) => {
 
   const { phoneNumber, message } = req.body;
   try {
-    const record = await new ApiSent({ phoneNumber, message }).save();
+    const record = await new ApiSent({
+      phoneNumber,
+      message,
+      _user: req.payload.id,
+    }).save();
 
     const apiRes = await api.post(
       `${process.env.SMS_GATEWAY_URL}/send`,
@@ -65,12 +69,12 @@ const sendMessage = async (req, res, next) => {
     );
 
     if (apiRes.status === 200) {
-      await ApiSent.findById(record.id, {
+      await ApiSent.findByIdAndUpdate(record.id, {
         status: status.SUCCESS,
         sentDate: new Date().toISOString(),
       });
     } else {
-      await ApiSent.findById(record.id, {
+      await ApiSent.findByIdAndUpdate(record.id, {
         status: status.FAILED,
         sentDate: new Date().toISOString(),
       });
@@ -82,4 +86,14 @@ const sendMessage = async (req, res, next) => {
   }
 };
 
-module.exports = { generateApiKey, getAllApiKeys, sendMessage };
+const getAllApiLogs = async (req, res, next) => {
+  try {
+    const apiLogs = await ApiSent.find({ _user: req.user.id });
+
+    res.status(200).send(apiLogs);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { generateApiKey, getAllApiKeys, sendMessage, getAllApiLogs };

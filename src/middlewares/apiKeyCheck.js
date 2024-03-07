@@ -15,6 +15,7 @@ const apiKeyGuard = async (req, res, next) => {
     const keyRecord = await ApiKey.findById(payload.keyId);
 
     await verifyToken(token, keyRecord.secret);
+    req.payload = payload;
     next();
   } catch (err) {
     next(err);

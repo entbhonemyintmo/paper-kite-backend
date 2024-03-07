@@ -10,6 +10,7 @@ const apiSentSchema = new Schema({
     enum: Object.values(status),
   },
   sentDate: Date,
+  _user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 module.exports = mongoose.model("apisents", apiSentSchema);
