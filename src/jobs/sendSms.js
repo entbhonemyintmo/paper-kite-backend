@@ -71,6 +71,9 @@ cron.schedule(CronExpression.EVERY_5_SECONDS, async () => {
                 "toSend.$.isSent": true,
                 "toSend.$.dateSent": new Date().toISOString(),
               },
+              $inc: {
+                success: 1,
+              },
             }
           );
 
@@ -82,6 +85,9 @@ cron.schedule(CronExpression.EVERY_5_SECONDS, async () => {
               $set: {
                 "toSend.$.isSent": true,
                 "toSend.$.dateSent": new Date().toISOString(),
+              },
+              $inc: {
+                failed: 1,
               },
             }
           );
