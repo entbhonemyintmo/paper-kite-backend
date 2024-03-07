@@ -16,6 +16,7 @@ const bodyParser = require("body-parser");
  */
 const authRoutes = require("./routes/authRoutes");
 const smsRoutes = require("./routes/smsRoutes");
+const apiRoutes = require("./routes/apiRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 
 /**
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 app.use("/auth", authRoutes);
 app.use("/sms", smsRoutes);
+app.use("/api", apiRoutes);
 
 /**
  * Error handler middleware must below of all routes register
