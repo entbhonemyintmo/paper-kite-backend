@@ -14,6 +14,7 @@ const bodyParser = require("body-parser");
  * Importing Routes
  */
 const authRoutes = require("./routes/authRoutes");
+const smsRoutes = require("./routes/smsRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 
 /**
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
  * Registering Routes
  */
 app.use("/auth", authRoutes);
+app.use("/sms", smsRoutes);
 
 /**
  * Error handler middleware must below of all routes register

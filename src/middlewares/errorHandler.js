@@ -1,5 +1,6 @@
 const { JsonWebTokenError } = require("jsonwebtoken");
 const HttpException = require("../utils/httpException");
+const { MulterError } = require("multer");
 
 const errorHandler = (err, req, res, next) => {
   /**
@@ -16,6 +17,15 @@ const errorHandler = (err, req, res, next) => {
   } else if (err instanceof JsonWebTokenError) {
     res.status(401).send({
       statusCode: 401,
+      message: err.message,
+    });
+
+    /**
+     * Handling File upload related Error
+     */
+  } else if (err instanceof MulterError) {
+    res.status(400).send({
+      statusCode: 400,
       message: err.message,
     });
 
