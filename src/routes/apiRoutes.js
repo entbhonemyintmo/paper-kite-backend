@@ -15,8 +15,6 @@ router.get(
   apiController.getAllApiKeys
 );
 
-router.get("/send", apiKeyGuard, (req, res) => {
-  res.status(200).send({ statuCode: 200, message: "got it!" });
-});
+router.post("/send", apiKeyGuard, apiController.sendMessage);
 
 module.exports = router;

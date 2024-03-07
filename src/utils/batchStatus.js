@@ -4,4 +4,9 @@ const BatchStatus = {
   COMPLETED: "completed",
 };
 
-module.exports = BatchStatus;
+const status = {
+  SUCCESS: "success",
+  FAILED: "failed",
+};
+
+module.exports = { BatchStatus, status };

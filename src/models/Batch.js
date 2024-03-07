@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const toSendSchema = require("./ToSend");
-const BatchStatus = require("../utils/batchStatus");
+const { BatchStatus } = require("../utils/batchStatus");
 const { Schema } = mongoose;
 
 const batchSchema = new Schema({

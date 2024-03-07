@@ -4,7 +4,7 @@ const api = require("axios");
 const CronExpression = require("../utils/cronExpression");
 
 const Batch = require("../models/Batch");
-const BatchStatus = require("../utils/batchStatus");
+const { BatchStatus } = require("../utils/batchStatus");
 const { default: mongoose } = require("mongoose");
 const toSendSchema = require("../models/ToSend");
 
@@ -33,15 +33,12 @@ cron.schedule(CronExpression.EVERY_SECOND, async () => {
  * send messsage to 10 phone numbers at every 5s
  */
 cron.schedule(CronExpression.EVERY_5_SECONDS, async () => {
-  console.log("every 5s");
-
   try {
     const inProgressBatch = await Batch.findOne({
       status: BatchStatus.IN_PROGRESS,
     });
 
     if (!inProgressBatch) {
-      console.log("No batch in progress");
       return;
     }
 
