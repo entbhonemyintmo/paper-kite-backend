@@ -1,20 +1,32 @@
+const { JsonWebTokenError } = require("jsonwebtoken");
 const HttpException = require("../utils/httpException");
-const HttpStatus = require("../utils/httpStatus");
 
 const errorHandler = (err, req, res, next) => {
   /**
-   * If the error is an instance of HttpException, send the status and message
+   * Handling the custom throw Error
    */
   if (err instanceof HttpException) {
     res
       .status(err.status)
       .send({ statusCode: err.status, message: err.message });
+
+    /**
+     * Handling JWT related Error
+     */
+  } else if (err instanceof JsonWebTokenError) {
+    res.status(401).send({
+      statusCode: 401,
+      message: err.message,
+    });
+
+    /**
+     * Handle other types of errors
+     */
   } else {
-    // Handle other types of errors
     console.error(err);
 
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+    res.status(500).send({
+      statusCode: 500,
       message: "Internal Server Error",
     });
   }

@@ -14,7 +14,6 @@ const bodyParser = require("body-parser");
  * Importing Routes
  */
 const authRoutes = require("./routes/authRoutes");
-const HttpException = require("./utils/httpException");
 const errorHandler = require("./middlewares/errorHandler");
 
 /**
