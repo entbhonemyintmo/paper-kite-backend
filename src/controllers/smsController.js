@@ -5,7 +5,7 @@ const Batch = require("../models/Batch");
 
 const createBatch = async (req, res, next) => {
   if (!req.file) return next(new HttpException(400, "File not provided!"));
-  if (!req.body.description || !req.body.schedule_at)
+  if (!req.body.description || !req.body.scheduleAt)
     return next(new HttpException(400, "Please fill all fields!"));
 
   const file = req.file;
@@ -20,6 +20,7 @@ const createBatch = async (req, res, next) => {
       scheduleAt,
       createdAt: new Date().toISOString(),
       toSend,
+      _user: req.user.id,
     }).save();
 
     res
@@ -30,4 +31,14 @@ const createBatch = async (req, res, next) => {
   }
 };
 
-module.exports = { createBatch };
+const getAllBatches = async (req, res, next) => {
+  try {
+    const batches = await Batch.find({ _user: req.user.id });
+
+    res.status(200).send({ batches });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { createBatch, getAllBatches };
