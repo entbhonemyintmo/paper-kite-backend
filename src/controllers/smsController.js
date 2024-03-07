@@ -12,7 +12,7 @@ const createBatch = async (req, res, next) => {
   const { description, scheduleAt } = req.body;
 
   try {
-    const toSend = await readCsv(file.path);
+    const toSend = await readCsv(file.buffer);
 
     await new Batch({
       description,

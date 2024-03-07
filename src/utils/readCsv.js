@@ -1,12 +1,13 @@
-const { createReadStream } = require("fs");
+const { Readable } = require("stream");
 const { createInterface } = require("readline");
 
-const readCsv = (filePath) => {
+const readCsvFromBuffer = (fileBuffer) => {
   return new Promise((resolve, reject) => {
     const toSend = [];
     let isFirstRow = true;
 
-    const readStream = createReadStream(filePath);
+    const readStream = Readable.from(fileBuffer);
+
     const lineReader = createInterface({
       input: readStream,
       crlfDelay: Infinity,
@@ -25,9 +26,16 @@ const readCsv = (filePath) => {
       }
     });
 
-    lineReader.on("close", () => resolve(toSend));
-    readStream.on("error", (e) => reject(e));
+    lineReader.on("close", () => {
+      fileBuffer = null;
+      resolve(toSend);
+    });
+
+    lineReader.on("error", (e) => {
+      fileBuffer = null;
+      reject(e);
+    });
   });
 };
 
-module.exports = readCsv;
+module.exports = readCsvFromBuffer;

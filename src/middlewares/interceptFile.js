@@ -2,7 +2,6 @@ const multer = require("multer");
 const HttpException = require("../utils/httpException");
 
 const interceptFile = multer({
-  dest: "./uploads",
   limits: {
     fileSize: 5 * 1024 * 1024, // 5 MB file size limit
   },
