@@ -6,7 +6,11 @@ require("./jobs/sendSms");
 const { connectDatabase } = require("./database");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://paper-kite.sasayaka.org",
+  })
+);
 
 /**
  * Importing Middlewares
