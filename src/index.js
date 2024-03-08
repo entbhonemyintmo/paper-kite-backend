@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 require("./jobs/sendSms");
 
 const { connectDatabase } = require("./database");
 
 const app = express();
+app.use(cors());
 
 /**
  * Importing Middlewares

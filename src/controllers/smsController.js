@@ -35,7 +35,7 @@ const getAllBatches = async (req, res, next) => {
   try {
     const batches = await Batch.find({ _user: req.user.id });
 
-    res.status(200).send({ batches });
+    res.status(200).send(batches);
   } catch (err) {
     next(err);
   }
