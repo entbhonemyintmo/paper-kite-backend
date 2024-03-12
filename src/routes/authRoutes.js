@@ -4,7 +4,7 @@ const { tokenGuard } = require("../middlewares/authCheck");
 
 router.post("/login", authController.singIn);
 router.post("/singup", authController.singUp);
-router.get(
+router.post(
   "/refresh",
   tokenGuard(process.env.REFRESH_TOKEN_SECRET),
   authController.refreshToken
