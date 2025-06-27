@@ -1,0 +1,26 @@
+services:
+    backend:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - .:/app
+        ports:
+            - "8000:8000"
+        environment:
+            - NODE_ENV=development
+        env_file:
+            - .env
+        command: npm run dev
+        depends_on:
+            - db
+    db:
+        image: mongo:latest
+        environment:
+            - MONGODB_DATABASE=paper-kite
+        ports:
+            - "27017:27017"
+        volumes:
+            - paper-kite-db:/data/db
+volumes:
+    paper-kite-db:
